@@ -12,30 +12,23 @@ ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
 
 install_requires = []
 
-tests_require = [
-    'pytest',
-    'mock'
-]
+tests_require = ["pytest", "mock"]
 
 docs_require = []
 
 dev_require = ["pre-commit"]
 
 setup(
-    name='flagpole',
-    version='1.1.0',
-    author='Patrick Kelley',
-    author_email='patrickbarrettkelley@gmail.com',
-    url='https://github.com/scriptsrc/flagpole',
-    description='Flagpole is a Flag arg parser to build out a dictionary with optional keys.',
-    long_description=open(os.path.join(ROOT, 'README.md')).read(),
-    packages=['flagpole'],
+    name="flagpole",
+    version="1.1.1",
+    author="Patrick Kelley",
+    author_email="patrickbarrettkelley@gmail.com",
+    url="https://github.com/scriptsrc/flagpole",
+    description="Flagpole is a Flag arg parser to build out a dictionary with optional keys.",
+    long_description=open(os.path.join(ROOT, "README.md")).read(),
+    packages=["flagpole"],
     include_package_data=True,
     zip_safe=False,
     install_requires=install_requires,
-    extras_require={
-        'tests': tests_require,
-        'docs': docs_require,
-        'dev': dev_require
-    }
+    extras_require={"tests": tests_require, "docs": docs_require, "dev": dev_require},
 )
