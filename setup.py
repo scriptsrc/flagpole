@@ -19,14 +19,14 @@ tests_require = [
 
 docs_require = []
 
-dev_require = []
+dev_require = ["pre-commit"]
 
 setup(
     name='flagpole',
-    version='1.0.1',
+    version='1.1.0',
     author='Patrick Kelley',
-    author_email='pkelley@netflix.com',
-    url='https://github.com/monkeysecurity/flagpole',
+    author_email='patrickbarrettkelley@gmail.com',
+    url='https://github.com/scriptsrc/flagpole',
     description='Flagpole is a Flag arg parser to build out a dictionary with optional keys.',
     long_description=open(os.path.join(ROOT, 'README.md')).read(),
     packages=['flagpole'],
