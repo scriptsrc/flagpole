@@ -26,6 +26,7 @@ setup(
     url="https://github.com/scriptsrc/flagpole",
     description="Flagpole is a Flag arg parser to build out a dictionary with optional keys.",
     long_description=open(os.path.join(ROOT, "README.md")).read(),
+    long_description_content_type="text/markdown",
     packages=["flagpole"],
     include_package_data=True,
     zip_safe=False,
