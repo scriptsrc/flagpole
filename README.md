@@ -3,9 +3,11 @@ Flag arg parser to build out a dictionary with optional keys.
 
 [![Version](http://img.shields.io/pypi/v/flagpole.svg?style=flat)](https://pypi.python.org/pypi/flagpole/)
 
-[![Build Status](https://travis-ci.org/monkeysecurity/flagpole.svg?branch=master)](https://travis-ci.org/monkeysecurity/flagpole)
+[![Build Status](https://travis-ci.org/monkeysecurity/flagpole.svg?branch=master)](https://travis-ci.org/scriptsrc/flagpole)
 
-[![Coverage Status](https://coveralls.io/repos/github/monkeysecurity/flagpole/badge.svg?branch=master&1)](https://coveralls.io/github/monkeysecurity/flagpole?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/monkeysecurity/flagpole/badge.svg?branch=master&1)](https://coveralls.io/github/scriptsrc/flagpole?branch=master)
+
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
 # Install:
 

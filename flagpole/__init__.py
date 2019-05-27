@@ -2,7 +2,6 @@ from collections import defaultdict
 
 
 class FlagRegistry:
-    
     def __init__(self):
         self.r = defaultdict(list)
 
@@ -60,20 +59,25 @@ class FlagRegistry:
         The `get_rules` method does not itself mutate the alb object, but it instead returns a new object (`rules`) which is
         appended to the final return value by the FlagRegistry.
         """
+
         def decorator(fn):
             flag_list = flag
             key_list = key
             if type(flag) not in [list, tuple]:
-                flag_list = [flag] 
-            if type(key) not in [list, tuple]: 
+                flag_list = [flag]
+            if type(key) not in [list, tuple]:
                 key_list = [key]
             for idx in range(len(flag_list)):
                 self.r[fn].append(
-                    dict(flag=flag_list[idx],
-                         depends_on=depends_on,
-                         key=key_list[idx],
-                         rtv_ix=idx))
+                    dict(
+                        flag=flag_list[idx],
+                        depends_on=depends_on,
+                        key=key_list[idx],
+                        rtv_ix=idx,
+                    )
+                )
             return fn
+
         return decorator
 
     def _validate_flags(self, flags):
@@ -115,13 +119,15 @@ class FlagRegistry:
             calculated = set([method])
         else:
             calculated.add(method)
-        
+
         method_flag, dependencies = self._get_method_flag(method)
         methods = self._find_methods_matching_flag(dependencies)
         for m in methods:
             if m in calculated:
-                raise Exception('Circular Dependency Error.')
-            dependencies = dependencies | self._calculate_dependency_flag(m, calculated=calculated)
+                raise Exception("Circular Dependency Error.")
+            dependencies = dependencies | self._calculate_dependency_flag(
+                m, calculated=calculated
+            )
         return dependencies
 
     def _find_methods_matching_flag(self, flag):
@@ -137,7 +143,7 @@ class FlagRegistry:
             method_flag, dependencies = self._get_method_flag(m)
             if method_flag & flag:
                 results.append(m)
-        return results 
+        return results
 
     def _get_method_flag(self, method):
         """
@@ -154,11 +160,22 @@ class FlagRegistry:
         method_dependencies = 0
 
         for entry in self.r[method]:
-            method_flag = method_flag | entry['flag']
-            method_dependencies = method_dependencies | entry['depends_on']
+            method_flag = method_flag | entry["flag"]
+            method_dependencies = method_dependencies | entry["depends_on"]
         return method_flag, method_dependencies
 
-    def _execute_method(self, method, method_flag, method_dependencies, executed_flag, result, pass_datastructure, flags, *args, **kwargs):
+    def _execute_method(
+        self,
+        method,
+        method_flag,
+        method_dependencies,
+        executed_flag,
+        result,
+        pass_datastructure,
+        flags,
+        *args,
+        **kwargs
+    ):
         """
         Executes a @FlagRegistry.register() decorated method.
 
@@ -189,17 +206,26 @@ class FlagRegistry:
 
         for entry in self.r[method]:
             if len(self.r[method]) > 1:
-                key_retval = retval[entry['rtv_ix']]
+                key_retval = retval[entry["rtv_ix"]]
             else:
                 key_retval = retval
-            if flags & entry['flag']:
-                if entry['key']:
-                    result.update({entry['key']: key_retval})
+            if flags & entry["flag"]:
+                if entry["key"]:
+                    result.update({entry["key"]: key_retval})
                 else:
                     result.update(key_retval)
         return True
 
-    def _do_method_pass(self, method_queue, executed_flag, result, pass_datastructure, flags, *args, **kwargs):
+    def _do_method_pass(
+        self,
+        method_queue,
+        executed_flag,
+        result,
+        pass_datastructure,
+        flags,
+        *args,
+        **kwargs
+    ):
         """
         Loop over available methods, executing those that are ready.
         - Raise an exception if we don't execute any methods on a given path. (circular dependency)
@@ -212,14 +238,24 @@ class FlagRegistry:
 
         for method in method_queue:
             method_flag, method_dependencies = self._get_method_flag(method)
-            if self._execute_method(method, method_flag, method_dependencies, executed_flag, result, pass_datastructure, flags, *args, **kwargs):
+            if self._execute_method(
+                method,
+                method_flag,
+                method_dependencies,
+                executed_flag,
+                result,
+                pass_datastructure,
+                flags,
+                *args,
+                **kwargs
+            ):
                 did_execute_method = True
                 executed_flag = int(executed_flag | method_flag)
             else:
                 next_method_queue.append(method)
 
         if not did_execute_method:
-            raise Exception('Circular Dependency Error.')
+            raise Exception("Circular Dependency Error.")
 
         return next_method_queue, executed_flag
 
@@ -240,8 +276,8 @@ class FlagRegistry:
         :param **kwargs: Passed on to the method registered in the FlagRegistry
         :return result: The dictionary created by combining the output of all executed methods.
         """
-        pass_datastructure = kwargs.pop('pass_datastructure', False)
-        start_with = kwargs.pop('start_with', dict())
+        pass_datastructure = kwargs.pop("pass_datastructure", False)
+        start_with = kwargs.pop("start_with", dict())
 
         flags = self._validate_flags(flags)
         result = start_with or dict()
@@ -250,22 +286,29 @@ class FlagRegistry:
         executed_flag = 0
         while len(method_queue) > 0:
             method_queue, executed_flag = self._do_method_pass(
-                method_queue, executed_flag, result, pass_datastructure, flags,
-                *args, **kwargs)
+                method_queue,
+                executed_flag,
+                result,
+                pass_datastructure,
+                flags,
+                *args,
+                **kwargs
+            )
         return result
 
 
 class Flags(object):
     def __init__(self, *flags):
         from collections import OrderedDict
+
         self.flags = OrderedDict()
         self._idx = 0
         for flag in flags:
-            self.flags[flag] = 2**self._idx
+            self.flags[flag] = 2 ** self._idx
             self._idx += 1
-        self.flags['ALL'] = 2**self._idx-1
-        self.flags['None'] = 0
-        self.flags['NONE'] = 0
+        self.flags["ALL"] = 2 ** self._idx - 1
+        self.flags["None"] = 0
+        self.flags["NONE"] = 0
 
     def __getattr__(self, k):
         return self.flags[k]
