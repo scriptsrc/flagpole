@@ -9,6 +9,10 @@ Flag arg parser to build out a dictionary with optional keys.
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/scriptsrc/flagpole.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/scriptsrc/flagpole/alerts/)
+
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/scriptsrc/flagpole.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/scriptsrc/flagpole/context:python)
+
 # Install:
 
 `pip install flagpole`
