@@ -35,10 +35,13 @@ jobs:
         black --check flagpole
         black --check tests
     - name: Test with pytest/coverage
-      env:
-        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       run: |
         pip install pytest coveralls
         coverage run -a -m py.test tests/test_flags.py
         coverage run -a -m py.test tests/test_registry.py
+    - name: Upload coverage data under py37
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      if: success() && matrix.python-version == '3.7'
+      run: |
         coveralls
