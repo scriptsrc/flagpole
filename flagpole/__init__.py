@@ -106,11 +106,11 @@ class FlagRegistry:
         """
         Given a method that may or may not contain dependencies, create a binary flag
         which represents all dependent methods.
-        
+
         As dependencies may be multiple levels deep, we use a recursive approach.
-        
+
         Note: Will raise an Exception if a dependency cycle is detected.
-        
+
         :param method: Starting point for calculating dependency flag
         :param calculated: set of methods this function has been called with.  Used to detect dependency cycles.
         :return dependencies: binary flag (int) created by binary-ORing each dependency in the chain.
@@ -132,9 +132,9 @@ class FlagRegistry:
 
     def _find_methods_matching_flag(self, flag):
         """
-        Given a flag, iterates over the method registry and returns a list of 
+        Given a flag, iterates over the method registry and returns a list of
         all methods which match the flag.
-        
+
         :param flag: flag to match against
         :return results: list of matching methods.
         """
