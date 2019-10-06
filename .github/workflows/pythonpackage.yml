@@ -39,7 +39,18 @@ jobs:
         pip install pytest coveralls
         coverage run -a -m py.test tests/test_flags.py
         coverage run -a -m py.test tests/test_registry.py
-    - name: Upload coverage report if tests pass
+
+    - name: Coveralls Parallel
       if: success()
-      run: |
-        coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel: true
+        path-to-lcov: .coverage
+
+    - name: Coveralls Finished
+      if: success()
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true
